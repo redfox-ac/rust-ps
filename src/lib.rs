@@ -1,3 +1,22 @@
+pub mod graph {
+    mod graph;
+    mod distance;
+    pub mod shortest {
+        mod shortest_paths;
+        mod dijkstra;
+        mod spfa;
+        mod bellman_ford;
+
+        pub use shortest_paths::ShortestPaths;
+        pub use dijkstra::dijkstra;
+        pub use spfa::spfa;
+        pub use bellman_ford::bellman_ford;
+    }
+
+    pub use graph::Graph;
+    pub use distance::{Distance, SignedDistance};
+}
+
 pub mod linear {
     mod node;
     mod stack;
