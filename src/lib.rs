@@ -1,3 +1,9 @@
+pub mod string {
+    mod kmp;
+    
+    pub use kmp::KMP;
+}
+
 pub mod tree {
     mod monoid;
     mod segment_tree;
