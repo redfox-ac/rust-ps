@@ -1,3 +1,5 @@
+use crate::graph::Edge;
+
 pub trait Graph {
     type Vertex;
     type Weight;
@@ -14,7 +16,7 @@ pub trait Graph {
 
     // =====
 
-    fn adj(&self, v: usize) -> impl Iterator<Item = (usize, &Self::Weight)>;
+    fn adj(&self, v: usize) -> impl Iterator<Item = Edge<&Self::Weight>>;
 
     // =====
 

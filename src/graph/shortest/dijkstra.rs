@@ -1,5 +1,5 @@
 use std::cmp::Reverse;
-use crate::graph::{Distance, Graph};
+use crate::graph::{Distance, Edge, Graph};
 use crate::graph::shortest::ShortestPaths;
 use crate::linear::Heap;
 
@@ -28,7 +28,7 @@ impl<G: Graph> Dijkstra for G {
             if visited[idx] { continue; }
             visited[idx] = true;
 
-            for (next, &cost) in self.adj(idx) {
+            for Edge { from: _, to: next, weight: &cost } in self.adj(idx) {
                 if !visited[next] && dist[next] > d + cost {
                     dist[next] = d + cost;
                     prev[next] = Some(idx);

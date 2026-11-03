@@ -1,4 +1,4 @@
-use crate::graph::{Distance, Graph, SignedDistance};
+use crate::graph::{Distance, Edge, Graph, SignedDistance};
 use crate::graph::shortest::ShortestPaths;
 use crate::linear::Queue;
 
@@ -33,7 +33,7 @@ impl<G: Graph> Spfa for G {
                 return None;
             }
 
-            for (next, &cost) in self.adj(v) {
+            for Edge { from: _, to: next, weight: &cost } in self.adj(v) {
                 if dist[next] > dist[v] + cost {
                     dist[next] = dist[v] + cost;
                     prev[next] = Some(v);

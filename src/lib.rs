@@ -1,6 +1,7 @@
 pub mod graph {
     mod graph;
     mod distance;
+    mod edge;
     mod impls {
         mod adj_list_graph;
         mod csr_graph;
@@ -22,6 +23,7 @@ pub mod graph {
 
     pub use graph::Graph;
     pub use distance::{Distance, SignedDistance};
+    pub use edge::Edge;
     pub use impls::{AdjListGraph, CsrGraph};
 }
 

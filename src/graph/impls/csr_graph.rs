@@ -1,4 +1,4 @@
-use crate::graph::Graph;
+use crate::graph::{Edge, Graph};
 
 pub struct CsrGraph<V, W> {
     offset: Vec<usize>,
@@ -26,10 +26,10 @@ impl<V, W> Graph for CsrGraph<V, W> {
         self.edges.len()
     }
 
-    fn adj(&self, v: usize) -> impl Iterator<Item = (usize, &W)> {
+    fn adj(&self, v: usize) -> impl Iterator<Item = Edge<&W>> {
         self.edges[self.offset[v]..self.offset[v + 1]]
             .iter()
-            .map(|(to, weight)| (*to, weight))
+            .map(move |(to, weight)| Edge { from: v, to: *to, weight })
     }
 
     fn value(&self, v: usize) -> &V {
@@ -38,11 +38,13 @@ impl<V, W> Graph for CsrGraph<V, W> {
 }
 
 impl<V, W> CsrGraph<V, W> {
-    pub fn from_edges(n: usize, edges: Vec<(usize, usize, W)>) -> Self where V: Default {
+    pub fn from_edges<E: Into<Edge<W>>>(n: usize, edges: Vec<E>) -> Self where V: Default {
+        let edges: Vec<Edge<W>> = edges.into_iter().map(Into::into).collect();
+
         let mut offset = vec![0; n + 1];
-        for &(from, to, _) in &edges {
-            assert!(from < n && to < n);
-            offset[from + 1] += 1;
+        for e in &edges {
+            assert!(e.from < n && e.to < n);
+            offset[e.from + 1] += 1;
         }
         for v in 0..n {
             offset[v + 1] += offset[v];
@@ -50,7 +52,7 @@ impl<V, W> CsrGraph<V, W> {
         
         let mut next = offset.clone();
         let mut slots: Vec<Option<(usize, W)>> = (0..edges.len()).map(|_| None).collect();
-        for (from, to, weight) in edges {
+        for Edge { from, to, weight } in edges {
             slots[next[from]] = Some((to, weight));
             next[from] += 1;
         }

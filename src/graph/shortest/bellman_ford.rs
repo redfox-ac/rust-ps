@@ -1,4 +1,4 @@
-use crate::graph::{Distance, Graph, SignedDistance};
+use crate::graph::{Distance, Edge, Graph, SignedDistance};
 use crate::graph::shortest::ShortestPaths;
 
 pub trait BellmanFord: Graph {
@@ -24,7 +24,7 @@ impl<G: Graph> BellmanFord for G {
                     continue;
                 }
 
-                for (next, &cost) in self.adj(v) {
+                for Edge { from: _, to: next, weight: &cost } in self.adj(v) {
                     if dist[next] > dist[v] + cost {
                         dist[next] = dist[v] + cost;
                         prev[next] = Some(v);
@@ -37,7 +37,7 @@ impl<G: Graph> BellmanFord for G {
             if dist[v] == G::Weight::INF {
                 continue;
             }
-            for (next, &cost) in self.adj(v) {
+            for Edge { from: _, to: next, weight: &cost } in self.adj(v) {
                 if dist[next] > dist[v] + cost {
                     return None;
                 }
