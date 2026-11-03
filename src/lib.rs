@@ -38,6 +38,12 @@ pub mod linear {
     pub use heap::Heap;
 }
 
+pub mod set {
+    mod union_find;
+
+    pub use union_find::UnionFind;
+}
+
 pub mod string {
     mod kmp;
     
