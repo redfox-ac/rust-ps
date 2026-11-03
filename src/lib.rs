@@ -1,6 +1,13 @@
 pub mod graph {
     mod graph;
     mod distance;
+    mod impls {
+        mod adj_list_graph;
+        mod csr_graph;
+
+        pub use adj_list_graph::AdjListGraph;
+        pub use csr_graph::CsrGraph;
+    }
     pub mod shortest {
         mod shortest_paths;
         mod dijkstra;
@@ -15,6 +22,7 @@ pub mod graph {
 
     pub use graph::Graph;
     pub use distance::{Distance, SignedDistance};
+    pub use impls::{AdjListGraph, CsrGraph};
 }
 
 pub mod linear {
