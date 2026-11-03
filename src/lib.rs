@@ -24,6 +24,13 @@ pub mod graph {
         pub use spfa::Spfa;
         pub use bellman_ford::BellmanFord;
     }
+    pub mod mst {
+        mod kruskal;
+        mod prim;
+
+        pub use kruskal::Kruskal;
+        pub use prim::Prim;
+    }
 
     pub use graphs::{Graph, UndirectedGraph};
     pub use distance::{Distance, SignedDistance};
