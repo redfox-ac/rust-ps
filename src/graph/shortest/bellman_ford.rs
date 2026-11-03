@@ -1,41 +1,49 @@
 use crate::graph::{Distance, Graph, SignedDistance};
 use crate::graph::shortest::ShortestPaths;
 
-pub fn bellman_ford<G: Graph>(graph: &G, start: usize) -> Option<ShortestPaths<G::Weight>>
-where
-    G::Weight: SignedDistance,
-{
-    let mut dist = vec![G::Weight::INF; graph.len()];
-    let mut prev = vec![None; graph.len()];
+pub trait BellmanFord: Graph {
+    fn bellman_ford(&self, start: usize) -> Option<ShortestPaths<Self::Weight>>
+    where
+        Self::Weight: SignedDistance;
+}
 
-    dist[start] = G::Weight::ZERO;
-    prev[start] = Some(start);
+impl<G: Graph> BellmanFord for G {
+    fn bellman_ford(&self, start: usize) -> Option<ShortestPaths<G::Weight>>
+    where
+        G::Weight: SignedDistance,
+    {
+        let mut dist = vec![G::Weight::INF; self.len()];
+        let mut prev = vec![None; self.len()];
 
-    for _ in 1..graph.len() {
-        for v in 0..graph.len() {
-            if dist[v] == G::Weight::INF {
-                continue;
-            }
+        dist[start] = G::Weight::ZERO;
+        prev[start] = Some(start);
 
-            for (next, &cost) in graph.adj(v) {
-                if dist[next] > dist[v] + cost {
-                    dist[next] = dist[v] + cost;
-                    prev[next] = Some(v);
+        for _ in 1..self.len() {
+            for v in 0..self.len() {
+                if dist[v] == G::Weight::INF {
+                    continue;
+                }
+
+                for (next, &cost) in self.adj(v) {
+                    if dist[next] > dist[v] + cost {
+                        dist[next] = dist[v] + cost;
+                        prev[next] = Some(v);
+                    }
                 }
             }
         }
-    }
-    
-    for v in 0..graph.len() {
-        if dist[v] == G::Weight::INF {
-            continue;
-        }
-        for (next, &cost) in graph.adj(v) {
-            if dist[next] > dist[v] + cost {
-                return None;
+        
+        for v in 0..self.len() {
+            if dist[v] == G::Weight::INF {
+                continue;
+            }
+            for (next, &cost) in self.adj(v) {
+                if dist[next] > dist[v] + cost {
+                    return None;
+                }
             }
         }
-    }
 
-    Some(ShortestPaths { dist, prev })
+        Some(ShortestPaths { dist, prev })
+    }
 }

@@ -15,9 +15,9 @@ pub mod graph {
         mod bellman_ford;
 
         pub use shortest_paths::ShortestPaths;
-        pub use dijkstra::dijkstra;
-        pub use spfa::spfa;
-        pub use bellman_ford::bellman_ford;
+        pub use dijkstra::Dijkstra;
+        pub use spfa::Spfa;
+        pub use bellman_ford::BellmanFord;
     }
 
     pub use graph::Graph;
