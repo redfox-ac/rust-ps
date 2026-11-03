@@ -25,6 +25,7 @@ impl<G: Graph> Dijkstra for G {
         pq.push(Reverse((G::Weight::ZERO, start)));
 
         while let Some(Reverse((d, idx))) = pq.pop() {
+            if visited[idx] { continue; }
             visited[idx] = true;
 
             for (next, &cost) in self.adj(idx) {
