@@ -22,3 +22,10 @@ pub trait Graph {
 
     fn value(&self, v: usize) -> &Self::Vertex;
 }
+
+
+pub trait UndirectedGraph: Graph {
+    fn edges(&self) -> impl Iterator<Item = Edge<&Self::Weight>> {
+        (0..self.len()).flat_map(move |u| self.adj(u).filter(|e| e.from <= e.to))
+    }
+}
