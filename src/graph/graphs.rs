@@ -1,3 +1,5 @@
+use crate::graph::Edge;
+
 pub trait Graph {
     type Vertex;
     type Weight;
@@ -14,9 +16,16 @@ pub trait Graph {
 
     // =====
 
-    fn adj(&self, v: usize) -> impl Iterator<Item = (usize, &Self::Weight)>;
+    fn adj(&self, v: usize) -> impl Iterator<Item = Edge<&Self::Weight>>;
 
     // =====
 
     fn value(&self, v: usize) -> &Self::Vertex;
+}
+
+
+pub trait UndirectedGraph: Graph {
+    fn edges(&self) -> impl Iterator<Item = Edge<&Self::Weight>> {
+        (0..self.len()).flat_map(move |u| self.adj(u).filter(|e| e.from <= e.to))
+    }
 }

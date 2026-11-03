@@ -1,4 +1,4 @@
-use crate::graph::Graph;
+use crate::graph::{Edge, Graph};
 
 pub struct AdjListGraph<V, W> {
     edges: Vec<Vec<(usize, W)>>,
@@ -26,8 +26,8 @@ impl<V, W> Graph for AdjListGraph<V, W> {
         self.size
     }
 
-    fn adj(&self, v: usize) -> impl Iterator<Item = (usize, &W)> {
-        self.edges[v].iter().map(|(to, weight)| (*to, weight))
+    fn adj(&self, v: usize) -> impl Iterator<Item = Edge<&W>> {
+        self.edges[v].iter().map(move |(to, weight)| Edge { from: v, to: *to, weight })
     }
 
     fn value(&self, v: usize) -> &V {

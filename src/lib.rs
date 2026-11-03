@@ -1,12 +1,17 @@
 pub mod graph {
-    mod graph;
+    mod graphs;
     mod distance;
+    mod edge;
     mod impls {
         mod adj_list_graph;
         mod csr_graph;
+        mod undirected_adj_list_graph;
+        mod undirected_csr_graph;
 
         pub use adj_list_graph::AdjListGraph;
         pub use csr_graph::CsrGraph;
+        pub use undirected_adj_list_graph::UndirectedAdjListGraph;
+        pub use undirected_csr_graph::UndirectedCsrGraph;
     }
     pub mod shortest {
         mod shortest_paths;
@@ -15,14 +20,22 @@ pub mod graph {
         mod bellman_ford;
 
         pub use shortest_paths::ShortestPaths;
-        pub use dijkstra::dijkstra;
-        pub use spfa::spfa;
-        pub use bellman_ford::bellman_ford;
+        pub use dijkstra::Dijkstra;
+        pub use spfa::Spfa;
+        pub use bellman_ford::BellmanFord;
+    }
+    pub mod mst {
+        mod kruskal;
+        mod prim;
+
+        pub use kruskal::Kruskal;
+        pub use prim::Prim;
     }
 
-    pub use graph::Graph;
+    pub use graphs::{Graph, UndirectedGraph};
     pub use distance::{Distance, SignedDistance};
-    pub use impls::{AdjListGraph, CsrGraph};
+    pub use edge::Edge;
+    pub use impls::{AdjListGraph, CsrGraph, UndirectedAdjListGraph, UndirectedCsrGraph};
 }
 
 pub mod linear {
